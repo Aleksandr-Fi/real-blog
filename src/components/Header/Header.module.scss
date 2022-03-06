@@ -1,0 +1,34 @@
+.Header {
+  width: 100%;
+  height: 80px;
+  padding: 14px 22px;
+  display: grid;
+  grid-template-columns: 148px auto 110px 110px;
+  gap: 20px;
+  background-color: #FFFFFF;
+  box-sizing: border-box;
+
+  &__btn {
+    padding: 0;
+    background-color: #FFFFFF;
+    border: none;
+    font-size: 18px;
+    line-height: 28px;
+    color: rgba(0, 0, 0, 0.85);
+    cursor: pointer;
+  }
+}
+
+.btn-logo {
+}
+
+.btn-singIn {
+  grid-column: 3/4;
+}
+
+.btn-singUp {
+  grid-column: 4/5;
+  color: #52C41A;
+  border: 1px solid #52C41A;
+  border-radius: 5px;
+}

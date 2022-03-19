@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux'
 
-import setArticles from './reducers/setArticles'
+import articlesData from './reducers/articlesData'
 
 const reducer = combineReducers({
-  setArticles,
+  articlesData,
 })
 
 export default reducer

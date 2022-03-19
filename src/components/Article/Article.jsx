@@ -1,6 +1,6 @@
 import classes from './Article.module.scss'
 
-const Article = () => {
+const ArticleShort = () => {
   return (
     <div className={classes.Article}>
       <div className={classes.Article__content}>
@@ -25,4 +25,4 @@ const Article = () => {
   )
 }
 
-export default Article
+export default ArticleShort

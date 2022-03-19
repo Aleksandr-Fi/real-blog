@@ -7,8 +7,17 @@ const getArticles = async (page = 1) => {
   if (!res.ok) {
     throw new Error(`Could not fetch articles, recived ${res.status}`)
   }
-  const body = await res.json()
-  return await body.articles
+  return await res.json()
 }
 
-export default getArticles
+const getArticlesData =
+  (page = 1) =>
+  (dispatch) =>
+    getArticles(page).then((body) => {
+      dispatch({
+        type: 'ARTICLES_RECEIVED',
+        newArticles: body,
+      })
+    })
+
+export default getArticlesData

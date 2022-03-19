@@ -3,6 +3,7 @@ import { HeartOutlined } from '@ant-design/icons'
 import { connect } from 'react-redux'
 import { format } from 'date-fns'
 import { bindActionCreators } from 'redux'
+import { Link } from 'react-router-dom'
 
 import getArticlesData from '../../api'
 
@@ -18,7 +19,9 @@ const ArticleList = ({ data, getArticlesData }) => {
           <div key={article.slug} className={classes.ArticleList__article}>
             <div className={classes.ArticleList__content}>
               <div className={classes['ArticleList__title-wrapper']}>
-                <h1 className={classes.ArticleList__title}>{article.title}</h1>
+                <Link to={`/articles/${article.slug}`} className={classes.ArticleList__title}>
+                  {article.title}
+                </Link>
                 <button className={classes['ArticleList__title-btn']}>
                   <HeartOutlined style={{ fontSize: 16, padding: 4 }} className={classes.ArticleList__heart} />
                   <span className={classes.ArticleList__favoritesCount}>{article.favoritesCount}</span>
@@ -27,7 +30,7 @@ const ArticleList = ({ data, getArticlesData }) => {
               <div className={classes.ArticleList__tags}>
                 {article.tagList
                   ? article.tagList.map((tag) => (
-                      <button key={`${article.slug}-${tagKey++}`} className={classes['Article__tags-btn']}>
+                      <button key={`${article.slug}-${tagKey++}`} className={classes['ArticleList__tags-btn']}>
                         {tag}
                       </button>
                     ))

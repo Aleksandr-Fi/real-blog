@@ -1,4 +1,4 @@
-const rootUrlKata = 'https://kata.academy:8021/api'
+import rootUrlKata from './URL'
 
 const getArticles = async (page = 1) => {
   const rootUrl = rootUrlKata

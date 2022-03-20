@@ -4,6 +4,9 @@ import { Spin } from 'antd'
 import Header from '../Header'
 import ArticleList from '../ArticleList'
 import Article from '../Article'
+import SignUp from '../User/SignUp'
+import SignIn from '../User/SignIn'
+import Profile from '../User/Profile'
 
 import classes from './App.module.scss'
 
@@ -16,6 +19,9 @@ const App = () => {
           <Route path="/" element={<ArticleList />} />
           <Route path="/articles" element={<ArticleList />} />
           <Route path="/articles/:slug" element={<Article />} />
+          <Route path="/sign-in" element={<SignIn />} />
+          <Route path="/sign-up" element={<SignUp />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="*" element={<Spin />} />
         </Routes>
       </div>

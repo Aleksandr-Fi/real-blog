@@ -7,6 +7,7 @@ import thunkMiddleware from 'redux-thunk'
 
 import 'antd/dist/antd.css'
 import 'normalize.css'
+import './index.css'
 import App from './components/App'
 import reducer from './store/reducer'
 import getArticlesData from './api'

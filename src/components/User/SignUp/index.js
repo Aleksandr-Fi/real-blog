@@ -1,2 +1,2 @@
-import Article from './Article'
-export default Article
+import SignUp from './SignUp'
+export default SignUp

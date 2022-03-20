@@ -5,9 +5,9 @@ import { HeartOutlined } from '@ant-design/icons'
 import { format } from 'date-fns'
 import ReactMarkdown from 'react-markdown'
 
-import classes from './Article.module.scss'
+import classes from '../User.module.scss'
 
-const Article = ({ data }) => {
+const SignIn = ({ data }) => {
   const { slug } = useParams()
   const article = data ? data.filter((article) => article.slug === slug)[0] : null
   let tagKey = 1
@@ -54,4 +54,4 @@ const mapStateToProps = (state) => ({
   data: state.articlesData.articles,
 })
 
-export default connect(mapStateToProps)(Article)
+export default connect(mapStateToProps)(SignIn)

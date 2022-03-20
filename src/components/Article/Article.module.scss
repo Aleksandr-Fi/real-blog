@@ -1,5 +1,5 @@
 .Article {
-  margin: 0 auto 24px auto;
+  margin: 0 auto;
   width: 941px;
   padding: 15px;
   background: #FFFFFF;
@@ -102,7 +102,8 @@
   }
 
   &__body {
-    grid-column: 1/4;
+    // grid-column: 1/4;
+    width: 880px;
     grid-row: 3/4;
     font-weight: 400;
     font-size: 20px;
@@ -110,5 +111,6 @@
     font-weight: 400;
     font-size: 20px;
     line-height: 28px;
+    word-wrap: break-word;
   }
 }

@@ -2,6 +2,9 @@
   font-family: Inter;
   font-style: normal;
   font-weight: normal;
+  min-height: 100%;
+  display: grid;
+  grid-template-rows: 80px auto;
 
   &__content {
     background: #EBEEF3;

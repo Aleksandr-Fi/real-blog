@@ -10,7 +10,8 @@ import 'normalize.css'
 import './index.css'
 import App from './components/App'
 import reducer from './store/reducer'
-import getArticlesData from './api'
+import getArticlesData from './api/getArticles'
+import { getUserData } from './store/actions'
 
 const composeEnhancers =
   typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
@@ -18,6 +19,11 @@ const composeEnhancers =
     : compose
 
 const store = createStore(reducer, composeEnhancers(applyMiddleware(thunkMiddleware)))
+
+const localData = JSON.parse(localStorage.getItem('user'))
+if (localData) {
+  store.dispatch(getUserData(localData))
+}
 
 store.dispatch(getArticlesData())
 

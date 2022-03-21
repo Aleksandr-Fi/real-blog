@@ -1,57 +1,110 @@
-import { useParams, Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { useForm } from 'react-hook-form'
+import { Alert } from 'antd'
+import { useState } from 'react'
 import { connect } from 'react-redux'
-import { Spin } from 'antd'
-import { HeartOutlined } from '@ant-design/icons'
-import { format } from 'date-fns'
-import ReactMarkdown from 'react-markdown'
 
 import classes from '../User.module.scss'
+import { regExpEmail } from '../regularExpressions'
+import authorization from '../../../api/authorization'
+import * as actions from '../../../store/actions'
 
-const SignIn = ({ data }) => {
-  const { slug } = useParams()
-  const article = data ? data.filter((article) => article.slug === slug)[0] : null
-  let tagKey = 1
-  return article ? (
-    <div key={article.slug} className={classes.Article}>
-      <div className={classes.Article__content}>
-        <div className={classes['Article__title-wrapper']}>
-          <Link to={`/articles/${article.slug}`} className={classes.Article__title}>
-            {article.title}
-          </Link>
-          <button className={classes['Article__title-btn']}>
-            <HeartOutlined style={{ fontSize: 16, padding: 4 }} className={classes.Article__heart} />
-            <span className={classes.Article__favoritesCount}>{article.favoritesCount}</span>
-          </button>
-        </div>
-        <div className={classes.Article__tags}>
-          {article.tagList
-            ? article.tagList.map((tag) => (
-                <button key={`${article.slug}-${tagKey++}`} className={classes['Article__tags-btn']}>
-                  {tag}
-                </button>
-              ))
-            : null}
-        </div>
-        <div className={classes.Article__slug}>{article.slug}</div>
-      </div>
-      <div className={classes.Article__info}>
-        <h1 className={classes['Article__author-name']}>{article.author.username}</h1>
-        <label className={classes.Article__data}>{format(new Date(article.createdAt), 'MMMM d, yyyy')}</label>
-        <img
-          className={classes.Article__avatar}
-          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC4AAAAuCAYAAABXuSs3AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAhlSURBVHgBzZkLcFRXGcf/59y7j2x2NxuSkJACCQQKJAESYm1pAJ0WpqI4nVoD1lrG+sBxOnQAx05nqqZVqbaIocVOx45OcUSw0BGLVYxa65DyNE0gCQkhBMLmnZDNa7OPu/fe47kbgbCP7O7dKv1lbvbc87rfPec753zfdwmSoGzLFoN/NG0uIC2hhK4E2BoCFDCGNBBiAuN/BH6eP8oTlwhj51SCfyhUaLJYx3s+fOONAHRCoIMFj1faU5WR9SqjmynBpxlgSagDMA9/cg0j+K13eP7bl4897UeCJCT4gvVbTRaH8G3CyFNc2AX4COCz46Qq22n1Gw+eOPryeLzt4hZ8+aYdG/gI/QRMLeJqoGumYkjSyBTl2cZDr/4lvuoxKKzYPkOg7Dku6w7875H4sqgC9b/UeOD14ekqTit4acXWLIWKR3itcvw/IaRakANP1B/eOxi1SrSCki9ty1dB/saTC3EH4LrfKgakh+r/8Nq1SOURBS+s+G6OQZBrPqoFqB/WrhJLedPBF/tDS2hoRtlj38kUxcDv7rzQGqSAMs87mkyhJaGCk4CqPAdGHsDHBnKvX5VfCM0Vpt4UP7Z9IwF9CRFm4k7Cd7R7sgpXtgxcOH3hZt6NRMlXtzlUHznDk3dDJyYE+BurEctUXuKHAbph7NJYStryjn0v+LRb8Ua+4iNPEh1Ci5BRLDiDl4lMb3q4mRltyiw0KPm8lYiEIGSh3Tu2lad2BW+1f2VbKi3S2Fg7v8lBgpSLzVgsdCfUpkWZjZPyEuigg5pZ6bl9e0aCry25xzfqEVojl04ecEazBfetWguD0YjBvm64hgahyjLSHDOQnp4FSfKj8fwZ+P1ezKFD0Ek+89MN/He/WFFRIbSqbCN0YiZS8HfNgxswO68gmJ6TP3lmjQ/dLqDRZMLJmmqu6TJ0o6qPVlZWHqCtyJvLFf9T0InERFjtDmTPmh2zbkZmDiwWG6RE9XsKjJB17170zOP2v1zKFT9Be/oWCt8tbPY0riKmmHWNvE6KJZW3Scq4TJUEuZgyStYhCQJ89ETRGHd9TXiJJbEtajC2RjtodC1vDZG7P2b7zITMc6b5dXY7jEISo87oJ0TuFc6HTr5Rfhc2Ll+GocHeuNssLizF/RlZyLoygaoT16ELpuZTbkw5oINMqwFfLsuGwWBATu7cuNtlZGbzGaJYO9+GTIsAfZB0ymfZDB3YzWKYinAtiAoLKdSa2kz6BOdNU3QbU06XD0MTgTBhoj4spHDMp6B3XG90gqmUMHigA1lleLH6Kjz+xA8Tt6Ti1dPX4ZMZ9MBjNB6u42QEOjl7bQw/ercFshy/8Kqq4lenu3DSqWu8JiFwUcbUa0iCi90uDPZ3heUPuwbhdo+F5Q8OdKO2M+7wSUQ0mUVKaS1fOGugE58qoLHuTHBn0XaLloZaNNWfgT13fvB+tPsSlhSXIS9/UXC0L7U18zZ5SAa+XpqpCrUGSaAd311dTjRzgft6OlF39jh8Pg/sGbkwpzrg8Xpxvu4U+nu7cLW9Bb09XdCn2bfg6v0eWbzpqbtNxHiOd5YCnawQ2rFUvMYPfyVm3Xq5AHWK7jNPw+tXAkV0qTrQzgf/PSRBnVKAGrkwGJqNhsIo/hlYlqzQ2mz9axn6nUJzczPLWXKvCEoeQRIMMyuGmA3FOWbkzsziDkQGrNY02GwOeAUrqt3z4VRnIlmIip3vH/51fdAw5q7inxhlHVzr85EETjUL1iX34IGijOAp6na5gvknOz3o6u9H0jDW42LkkJYMnrl9F0/7sopWivxw00zchM22mbYUbFhVis3356Msh8JsEIInpcQXptbbLLsRJYvmwZaRg5GRUbj9ej0g8mzboapTWuqmK+K22F+z+8a+jjjNXE2whzO8+Dy5gtK8bAjf3AmprxU+Z21YXZEbFqtXFOMz+SWQd29GU+cA/qjMw5Hr8e8HfMtu9o4p+2/c37RVtHgF39gr4+nkIfs4qrNr8X33MZSMt/K35g5zgEdNMvNALTOCK2jqZbRlwjKbj4cSABkfRvFoK77n/iuOpp3AozPiOYyIzD/D/ODysb03T7TbzLOBC2eaZxbdl8tHsyxaF9vsHdghnYTFN3qrW4MZdM0mEFMqDDPmBqVlTAb/1IJULnB68YO8DnftfBNQ/74P8Ey2tSsTWB24AovVhtM+e7RHar293vjWK7un5oV5rbIBzxsUrOS1l4aWFViBx5Wm8I7dLjDJC8IdYSKaYJ67gguuIJWvUEJvPYLxWcFEeLz+Cd+/cdyeg7qxcCdaBfuA+sUfhuaHmbUt+/f0EhnrefJqaNkq0gOqRDBFvW5+3T7lhAi3CR3Ew2faE1k1yuVwk4m/92WDR97UcORnA4gluMb5w1XdEpgWsW2bml8iTmNIuvoQE1d0F2+tMXS7ZG2yQNfWH/1FT6T6UR2Ji7/f06ESdTUfuve1e20XWUmjftkARuIQ/Hr0UN1s/wByTZMBU64eZ+EXV7Uc2B3Vcp3WA2o6+Ep/qsy+yD+q7iqyMckw4Ypal3W1IhbMeWGaQoZCYYQvLbVKIsLnIqnHVGKGlE4drtKkfeaz33ryrGJx7BE8I3dFfG57fayuwLiJGxE+m0pqeu/WtJHtP9/5m7cQB3H7nC//8s23B1Y//ElfzuLnVaMlTNlZX3vMPlhPW3iexeGSMuf82FS6adG8ne/EJbSGrqjM1TcrHdmN1V8jPs8jVPKXU9kf7EfYVQOSGTmGyAY7oTzzX3/FYGIBa/qHVDQd8AnKPsdPPxhGgiQVxGs6VGlMb3MWO0a7S5nAvmD+SqXNn798qVE02ARBFLTeVTnAPxgHPGg43iof3dsBVfmzbElpHHCsa1j4dOLf8G/wHykoO0iclQgVAAAAAElFTkSuQmCC"
-          alt="avatar"
-        />
-      </div>
-      <ReactMarkdown className={classes.Article__body}>{article.body}</ReactMarkdown>
-    </div>
-  ) : (
-    <Spin />
+const SignIn = ({ getUserData }) => {
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+    reset,
+  } = useForm()
+
+  let [errorMessage, setErrorMessage] = useState(null)
+  let [successMessage, setSuccessMessage] = useState(null)
+
+  const navigate = useNavigate()
+  const onSubmitRedirect = () => {
+    navigate('/')
+  }
+
+  const onSubmit = (data) => {
+    authorization(data)
+      .then((res) => {
+        getUserData(res.user)
+        localStorage.setItem('user', JSON.stringify(res.user))
+        setErrorMessage(null)
+        reset()
+        setSuccessMessage(<Alert message="Авторизация прошла успешно!" type="success" />)
+        setTimeout(onSubmitRedirect, 1000)
+      })
+      .catch((error) => {
+        setErrorMessage(<Alert message={error.message} type="error" />)
+        setSuccessMessage(null)
+        setTimeout(setErrorMessage, 5000, null)
+      })
+  }
+  return (
+    <section className={classes.User} onSubmit={handleSubmit(onSubmit)}>
+      <form className={classes.User__form}>
+        {errorMessage}
+        {successMessage}
+        <h1 className={classes.User__title}>Sign In</h1>
+        <label className={classes['User__label-input']}>
+          <span className={classes['User__caption-input']}>Email address</span>
+          <input
+            className={classes.User__input}
+            tabIndex="2"
+            placeholder="Email address"
+            {...register('email', {
+              required: 'Thats feild is required',
+              validate: (val) => regExpEmail.test(val) || 'Email address will be correct',
+            })}
+          />
+          {errors?.email && (
+            <span className={[classes['User__caption-input'], errors?.email && classes['User__error-text']].join(' ')}>
+              {errors?.email?.message || 'ERROR'}
+            </span>
+          )}
+        </label>
+        <label className={classes['User__label-input']}>
+          <span className={classes['User__caption-input']}>Password</span>
+          <input
+            className={classes.User__input}
+            tabIndex="3"
+            type="password"
+            placeholder="Password"
+            {...register('password', {
+              required: 'Thats feild is required',
+              minLength: {
+                value: 6,
+                message: 'Your password needs to be at least 6 characters.',
+              },
+              maxLength: {
+                value: 40,
+                message: 'Your password must consist of no more than 40 characters.',
+              },
+            })}
+          />
+          {errors?.password && (
+            <span
+              className={[classes['User__caption-input'], errors?.password && classes['User__error-text']].join(' ')}
+            >
+              {errors?.password?.message || 'ERROR'}
+            </span>
+          )}
+        </label>
+        <button className={classes.User__submit} tabIndex="6" type="submit">
+          Login
+        </button>
+        <span className={classes.User__redirection}>
+          Already have an account?
+          <Link to="/sign-up"> Sign Up</Link>.
+        </span>
+      </form>
+    </section>
   )
 }
 
 const mapStateToProps = (state) => ({
-  data: state.articlesData.articles,
+  data: state.userData,
 })
 
-export default connect(mapStateToProps)(SignIn)
+export default connect(mapStateToProps, actions)(SignIn)

@@ -5,7 +5,7 @@ import { format } from 'date-fns'
 import { bindActionCreators } from 'redux'
 import { Link } from 'react-router-dom'
 
-import getArticlesData from '../../api'
+import getArticlesData from '../../api/getArticles'
 
 import classes from './ArticleList.module.scss'
 

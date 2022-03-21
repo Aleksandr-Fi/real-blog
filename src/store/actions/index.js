@@ -1,1 +1,3 @@
-export const changePageArticles = (articles) => ({ type: 'GET_NEW_ARTICLES_PAGE', articles: articles })
+export const getUserData = (data) => ({ type: 'USER_RECEIVED', newUserData: data })
+
+export const logOut = () => ({ type: 'LOG_OUT' })

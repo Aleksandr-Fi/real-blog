@@ -1,20 +1,48 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
+import { Alert } from 'antd'
+import { useState } from 'react'
 
 import classes from '../User.module.scss'
 import { regExpEmail } from '../regularExpressions'
+import postNewUser from '../../../api/postNewUser'
 
 const SignUp = () => {
   const {
     register,
     formState: { errors },
-    watch,
     handleSubmit,
+    reset,
+    watch,
   } = useForm()
-  const onSubmit = (data) => console.log(data)
+
+  let [errorMessage, setErrorMessage] = useState(null)
+  let [successMessage, setSuccessMessage] = useState(null)
+
+  const navigate = useNavigate()
+  const onSubmitRedirect = () => {
+    navigate('/sign-in')
+  }
+
+  const onSubmit = (data) => {
+    postNewUser(data)
+      .then(() => {
+        setErrorMessage(null)
+        reset()
+        setSuccessMessage(<Alert message="Регистрация прошла успешно!" type="success" />)
+        setTimeout(onSubmitRedirect, 2000)
+      })
+      .catch((error) => {
+        setErrorMessage(<Alert message={error.message} type="error" />)
+        setSuccessMessage(null)
+        setTimeout(setErrorMessage, 5000, null)
+      })
+  }
   return (
     <section className={classes.User} onSubmit={handleSubmit(onSubmit)}>
       <form className={classes.User__form}>
+        {errorMessage}
+        {successMessage}
         <h1 className={classes.User__title}>Create new account</h1>
         <label className={classes['User__label-input']}>
           <span className={classes['User__caption-input']}>Username</span>

@@ -29,7 +29,7 @@ const SignUp = () => {
       .then(() => {
         setErrorMessage(null)
         reset()
-        setSuccessMessage(<Alert message="Регистрация прошла успешно!" type="success" />)
+        setSuccessMessage(<Alert message="Registration was successful!" type="success" />)
         setTimeout(onSubmitRedirect, 2000)
       })
       .catch((error) => {

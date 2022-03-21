@@ -32,7 +32,7 @@ const SignIn = ({ getUserData }) => {
         localStorage.setItem('user', JSON.stringify(res.user))
         setErrorMessage(null)
         reset()
-        setSuccessMessage(<Alert message="Авторизация прошла успешно!" type="success" />)
+        setSuccessMessage(<Alert message="Authorization was successful!" type="success" />)
         setTimeout(onSubmitRedirect, 1000)
       })
       .catch((error) => {

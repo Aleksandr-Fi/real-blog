@@ -1,9 +1,10 @@
 import { useForm } from 'react-hook-form'
+import { connect } from 'react-redux'
 
 import classes from '../User.module.scss'
 import { regExpEmail, regExpUrl } from '../regularExpressions'
 
-const Profile = () => {
+const Profile = ({ user }) => {
   const {
     register,
     formState: { errors },
@@ -20,6 +21,7 @@ const Profile = () => {
             className={[classes.User__input, errors?.username && classes['User__input--error']].join(' ')}
             tabIndex="1"
             placeholder="Username"
+            defaultValue={user.username}
             {...register('username', {
               required: 'Thats feild is required',
               minLength: {
@@ -46,6 +48,7 @@ const Profile = () => {
             className={classes.User__input}
             tabIndex="2"
             placeholder="Email address"
+            defaultValue={user.email}
             {...register('email', {
               required: 'Thats feild is required',
               validate: (val) => regExpEmail.test(val) || 'Email address will be correct',
@@ -65,7 +68,6 @@ const Profile = () => {
             type="password"
             placeholder="New password"
             {...register('password', {
-              required: 'Thats feild is required',
               minLength: {
                 value: 6,
                 message: 'Your password needs to be at least 6 characters.',
@@ -112,4 +114,8 @@ const Profile = () => {
   )
 }
 
-export default Profile
+const mapStateToProps = (state) => ({
+  user: state.userData.user,
+})
+
+export default connect(mapStateToProps)(Profile)

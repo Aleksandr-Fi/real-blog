@@ -1,6 +1,6 @@
 import rootUrlKata from './URL'
 
-const authorization = async (data) => {
+const login = async (data) => {
   const rootUrl = rootUrlKata
   const bodyPost = {
     user: {
@@ -22,4 +22,4 @@ const authorization = async (data) => {
   return await res.json()
 }
 
-export default authorization
+export default login

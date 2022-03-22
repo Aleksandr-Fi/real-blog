@@ -1,19 +1,49 @@
 import { useForm } from 'react-hook-form'
+import { useState } from 'react'
+import { Alert } from 'antd'
 import { connect } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 import classes from '../User.module.scss'
 import { regExpEmail, regExpUrl } from '../regularExpressions'
+import putEditUser from '../../../api/putEditUser'
+import * as actions from '../../../store/actions'
 
-const Profile = ({ user }) => {
+const Profile = ({ user, getUserData }) => {
   const {
     register,
     formState: { errors },
     handleSubmit,
+    // reset,
   } = useForm()
-  const onSubmit = (data) => console.log(data)
+
+  let [errorMessage, setErrorMessage] = useState(null)
+  let [successMessage, setSuccessMessage] = useState(null)
+
+  const navigate = useNavigate()
+  const onSubmitRedirect = () => {
+    navigate('/')
+  }
+  const onSubmit = (data) => {
+    putEditUser(data, user.token)
+      .then((res) => {
+        getUserData(res.user)
+        localStorage.setItem('user', JSON.stringify(res.user))
+        setErrorMessage(null)
+        setSuccessMessage(<Alert message="Profile has been successfully edited!" type="success" />)
+        setTimeout(onSubmitRedirect, 3000, null)
+      })
+      .catch((error) => {
+        setErrorMessage(<Alert message={error.message} type="error" />)
+        setSuccessMessage(null)
+        setTimeout(setErrorMessage, 5000, null)
+      })
+  }
   return (
     <section className={classes.User} onSubmit={handleSubmit(onSubmit)}>
       <form className={classes.User__form}>
+        {errorMessage}
+        {successMessage}
         <h1 className={classes.User__title}>Edit Profile</h1>
         <label className={classes['User__label-input']}>
           <span className={classes['User__caption-input']}>Username</span>
@@ -118,4 +148,4 @@ const mapStateToProps = (state) => ({
   user: state.userData.user,
 })
 
-export default connect(mapStateToProps)(Profile)
+export default connect(mapStateToProps, actions)(Profile)

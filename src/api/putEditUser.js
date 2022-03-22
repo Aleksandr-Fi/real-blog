@@ -2,13 +2,14 @@ import rootUrlKata from './URL'
 
 const putEditUser = async (data, token) => {
   const rootUrl = rootUrlKata
+  const changeData = {}
+  for (var key in data) {
+    if (data[key]) {
+      changeData[key] = data[key]
+    }
+  }
   const bodyPost = {
-    user: {
-      username: data.username,
-      email: data.email,
-      password: data.password,
-      image: data.image,
-    },
+    user: changeData,
   }
 
   const res = await fetch(`${rootUrl}user`, {

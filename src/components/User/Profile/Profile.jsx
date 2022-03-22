@@ -9,12 +9,11 @@ import { regExpEmail, regExpUrl } from '../regularExpressions'
 import putEditUser from '../../../api/putEditUser'
 import * as actions from '../../../store/actions'
 
-const Profile = ({ user, getUserData }) => {
+const Profile = ({ userData, getUserData }) => {
   const {
     register,
     formState: { errors },
     handleSubmit,
-    // reset,
   } = useForm()
 
   let [errorMessage, setErrorMessage] = useState(null)
@@ -25,13 +24,13 @@ const Profile = ({ user, getUserData }) => {
     navigate('/')
   }
   const onSubmit = (data) => {
-    putEditUser(data, user.token)
+    putEditUser(data, userData.token)
       .then((res) => {
         getUserData(res.user)
         localStorage.setItem('user', JSON.stringify(res.user))
         setErrorMessage(null)
         setSuccessMessage(<Alert message="Profile has been successfully edited!" type="success" />)
-        setTimeout(onSubmitRedirect, 3000, null)
+        setTimeout(onSubmitRedirect, 2000, null)
       })
       .catch((error) => {
         setErrorMessage(<Alert message={error.message} type="error" />)
@@ -51,7 +50,7 @@ const Profile = ({ user, getUserData }) => {
             className={[classes.User__input, errors?.username && classes['User__input--error']].join(' ')}
             tabIndex="1"
             placeholder="Username"
-            defaultValue={user.username}
+            defaultValue={userData.username}
             {...register('username', {
               required: 'Thats feild is required',
               minLength: {
@@ -78,7 +77,7 @@ const Profile = ({ user, getUserData }) => {
             className={classes.User__input}
             tabIndex="2"
             placeholder="Email address"
-            defaultValue={user.email}
+            defaultValue={userData.email}
             {...register('email', {
               required: 'Thats feild is required',
               validate: (val) => regExpEmail.test(val) || 'Email address will be correct',
@@ -145,7 +144,7 @@ const Profile = ({ user, getUserData }) => {
 }
 
 const mapStateToProps = (state) => ({
-  user: state.userData.user,
+  userData: state.userData,
 })
 
 export default connect(mapStateToProps, actions)(Profile)

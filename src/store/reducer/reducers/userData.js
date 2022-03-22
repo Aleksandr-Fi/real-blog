@@ -3,12 +3,16 @@ const userState = {
 }
 
 const userData = (state = userState, action = 'ACTION') => {
-  const { type, newUserData } = action
+  const { type, newUserData, update } = action
   switch (type) {
     case 'USER_RECEIVED':
       return {
         isFetch: true,
-        user: newUserData,
+        username: newUserData.username,
+        email: newUserData.email,
+        token: newUserData.token,
+        image: newUserData.image,
+        update: update,
       }
     case 'LOG_OUT':
       return {

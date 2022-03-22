@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 
 import classes from '../User.module.scss'
 import { regExpEmail } from '../regularExpressions'
-import authorization from '../../../api/authorization'
+import login from '../../../api/login'
 import * as actions from '../../../store/actions'
 
 const SignIn = ({ getUserData }) => {
@@ -26,13 +26,13 @@ const SignIn = ({ getUserData }) => {
   }
 
   const onSubmit = (data) => {
-    authorization(data)
+    login(data)
       .then((res) => {
         getUserData(res.user)
         localStorage.setItem('user', JSON.stringify(res.user))
         setErrorMessage(null)
         reset()
-        setSuccessMessage(<Alert message="Authorization was successful!" type="success" />)
+        setSuccessMessage(<Alert message="Login was successful!" type="success" />)
         setTimeout(onSubmitRedirect, 1000)
       })
       .catch((error) => {

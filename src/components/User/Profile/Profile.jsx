@@ -74,7 +74,7 @@ const Profile = ({ userData, getUserData }) => {
         <label className={classes['User__label-input']}>
           <span className={classes['User__caption-input']}>Email address</span>
           <input
-            className={classes.User__input}
+            className={[classes.User__input, errors?.email && classes['User__input--error']].join(' ')}
             tabIndex="2"
             placeholder="Email address"
             defaultValue={userData.email}
@@ -92,7 +92,7 @@ const Profile = ({ userData, getUserData }) => {
         <label className={classes['User__label-input']}>
           <span className={classes['User__caption-input']}>New password</span>
           <input
-            className={classes.User__input}
+            className={[classes.User__input, errors?.password && classes['User__input--error']].join(' ')}
             tabIndex="3"
             type="password"
             placeholder="New password"
@@ -118,7 +118,7 @@ const Profile = ({ userData, getUserData }) => {
         <label className={classes['User__label-input']}>
           <span className={classes['User__caption-input']}>Avatar image (url)</span>
           <input
-            className={classes.User__input}
+            className={[classes.User__input, errors?.image && classes['User__input--error']].join(' ')}
             tabIndex="4"
             placeholder="Avatar image"
             {...register('image', {

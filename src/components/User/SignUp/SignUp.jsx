@@ -73,7 +73,7 @@ const SignUp = () => {
         <label className={classes['User__label-input']}>
           <span className={classes['User__caption-input']}>Email address</span>
           <input
-            className={classes.User__input}
+            className={[classes.User__input, errors?.email && classes['User__input--error']].join(' ')}
             tabIndex="2"
             placeholder="Email address"
             {...register('email', {
@@ -90,7 +90,7 @@ const SignUp = () => {
         <label className={classes['User__label-input']}>
           <span className={classes['User__caption-input']}>Password</span>
           <input
-            className={classes.User__input}
+            className={[classes.User__input, errors?.password && classes['User__input--error']].join(' ')}
             tabIndex="3"
             type="password"
             placeholder="Password"
@@ -117,7 +117,7 @@ const SignUp = () => {
         <label className={classes['User__label-input']}>
           <span className={classes['User__caption-input']}>Repeat Password</span>
           <input
-            className={classes.User__input}
+            className={[classes.User__input, errors?.repeatPassword && classes['User__input--error']].join(' ')}
             tabIndex="4"
             type="password"
             placeholder="Password"

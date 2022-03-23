@@ -51,23 +51,25 @@ const Article = ({ articlesData, userData }) => {
         <label className={classes.Article__e}>{format(new Date(article.createdAt), 'MMMM d, yyyy')}</label>
         <img className={classes.Article__avatar} src={article.author.image} alt="avatar" />
       </div>
-      <div className={classes['Article__article-btns']}>
-        <button
-          className={[
-            classes['Article__article-btn'],
-            classes['Article__article-btn--red'],
-            classes['Article__delete-btn'],
-          ].join(' ')}
-          onClick={onDelete}
-        >
-          <span>Delete</span>
-        </button>
-        <button className={[classes['Article__article-btn'], classes['Article__article-btn--green']].join(' ')}>
-          <Link className={classes.Article__link} to={`/articles/${slug}/edit`}>
-            Edit
-          </Link>
-        </button>
-      </div>
+      {article.author.username === userData.username ? (
+        <div className={classes['Article__article-btns']}>
+          <button
+            className={[
+              classes['Article__article-btn'],
+              classes['Article__article-btn--red'],
+              classes['Article__delete-btn'],
+            ].join(' ')}
+            onClick={onDelete}
+          >
+            <span>Delete</span>
+          </button>
+          <button className={[classes['Article__article-btn'], classes['Article__article-btn--green']].join(' ')}>
+            <Link className={classes.Article__link} to={`/articles/${slug}/edit`}>
+              Edit
+            </Link>
+          </button>
+        </div>
+      ) : null}
       <ReactMarkdown className={classes.Article__body}>{article.body}</ReactMarkdown>
     </div>
   ) : (

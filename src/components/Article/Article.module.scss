@@ -28,6 +28,10 @@
     font-size: 20px;
     line-height: 28px;
     color: #1890FF;
+    // cropping a long title with an ellipsis
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 
   &__title-btn {
@@ -115,9 +119,12 @@
     font-size: 14px;
     line-height: 22px;
     padding: 6px 19px;
-    // box-sizing: border-box;
     border-radius: 5px;
     background: #FFFFFF;
+    cursor: pointer;
+    &:hover {
+      opacity: 0.7; 
+    }
 
     &--red {
       color: #F5222D;
@@ -153,7 +160,6 @@
     }
 
   &__body {
-    // grid-column: 1/4;
     margin-top: 25px;
     width: 880px;
     grid-row: 3/4;

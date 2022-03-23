@@ -42,7 +42,7 @@ const Header = ({ userData, logOut, getUserData }) => {
         </Link>
       </button>
       <button className={[classes.Header__btn, classes['Header__btn-create']].join(' ')}>
-        <Link to="/sign-in">Create article</Link>
+        <Link to="/new-article">Create article</Link>
       </button>
       <button className={[classes.Header__btn, classes['Header__btn-user']].join(' ')}>
         <Link to="/profile">{userName}</Link>

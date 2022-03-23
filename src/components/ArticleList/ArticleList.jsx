@@ -36,7 +36,7 @@ const ArticleList = ({ data, getArticlesData }) => {
                     ))
                   : null}
               </div>
-              <div className={classes.ArticleList__slug}>{article.slug}</div>
+              <div className={classes.ArticleList__description}>{article.description}</div>
             </div>
             <div className={classes.ArticleList__info}>
               <h1 className={classes['ArticleList__author-name']}>{article.author.username}</h1>

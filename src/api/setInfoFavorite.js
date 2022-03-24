@@ -13,7 +13,6 @@ const setInfoFavorite = async (slug, token, method = 'POST') => {
     throw new Error('Oops, something went wrong.')
   }
   const body = await res.json()
-  console.log(body.article.favorited)
   return await body
 }
 

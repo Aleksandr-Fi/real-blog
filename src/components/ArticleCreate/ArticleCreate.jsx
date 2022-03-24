@@ -17,7 +17,7 @@ const ArticleCreate = ({ userData }) => {
   useEffect(() => {
     if (slug) {
       getOneArticle(slug).then((res) => {
-        setArticle(res)
+        setArticle(res.article)
         console.log(res)
       })
     }

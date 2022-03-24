@@ -30,7 +30,6 @@ const Article = ({ userData }) => {
   let [visibility, setVisibility] = useState(null)
 
   const onDelete = () => {
-    console.log(onYesDelete, visibility, onNoDelete)
     const newVisibility = { ...visibility, delPop: true }
     setVisibility(newVisibility)
   }

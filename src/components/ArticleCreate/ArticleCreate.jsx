@@ -148,7 +148,6 @@ const ArticleCreate = ({ userData, articlesData }) => {
           <span className={classes['Article__caption-input']}>Tags</span>
           {tagList.length
             ? tagList.map((tag) => {
-                // const key = tagId++
                 const onDelete = () => deleteTag(tag)
                 return (
                   <div key={tag} className={classes['Article__tag-wrapper']}>

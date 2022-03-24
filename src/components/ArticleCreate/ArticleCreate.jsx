@@ -14,10 +14,15 @@ const ArticleCreate = ({ userData }) => {
   const { slug } = useParams()
   let [article, setArticle] = useState(null)
 
+  let [tagList, setTagList] = useState([])
+  let [newTagError, setNewTagError] = useState(null)
+  let [newTag, setNewTag] = useState('')
+
   useEffect(() => {
     if (slug) {
       getOneArticle(slug).then((res) => {
         setArticle(res.article)
+        setTagList(res.article.tagList)
         console.log(res)
       })
     }
@@ -31,10 +36,6 @@ const ArticleCreate = ({ userData }) => {
 
   let [errorMessage, setErrorMessage] = useState(null)
   let [successMessage, setSuccessMessage] = useState(null)
-
-  let [tagList, setTagList] = useState([])
-  let [newTagError, setNewTagError] = useState(null)
-  let [newTag, setNewTag] = useState('')
 
   const addTag = () => {
     const repeatedTag = tagList.filter((tag) => tag === newTag)

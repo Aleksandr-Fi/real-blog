@@ -11,7 +11,6 @@ import classes from './ArticleCreate.module.scss'
 
 const ArticleCreate = ({ userData, articlesData }) => {
   const { slug } = useParams()
-  console.log(slug)
   const article = slug && articlesData ? articlesData.filter((article) => article.slug === slug)[0] : null
 
   const {

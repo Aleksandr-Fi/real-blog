@@ -10,7 +10,6 @@ import 'normalize.css'
 import './index.css'
 import App from './components/App'
 import reducer from './store/reducer'
-import getArticlesData from './api/getArticles'
 import { getUserData } from './store/actions'
 
 const composeEnhancers =
@@ -24,8 +23,6 @@ const localData = JSON.parse(localStorage.getItem('user'))
 if (localData) {
   store.dispatch(getUserData(localData))
 }
-
-store.dispatch(getArticlesData())
 
 ReactDOM.render(
   <React.StrictMode>

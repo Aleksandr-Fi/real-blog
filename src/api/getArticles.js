@@ -10,20 +10,4 @@ const getArticles = async (page = 1) => {
   return await res.json()
 }
 
-const getArticlesData =
-  (page = 1) =>
-  (dispatch) =>
-    getArticles(page).then((body) => {
-      dispatch({
-        type: 'ARTICLES_RECEIVED',
-        newArticles: body,
-        page: page,
-      })
-      return {
-        articles: body.articles,
-        articlesCount: body.articlesCount,
-        page: page,
-      }
-    })
-
-export default getArticlesData
+export default getArticles

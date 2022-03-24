@@ -4,23 +4,29 @@ import { Spin } from 'antd'
 import { HeartOutlined } from '@ant-design/icons'
 import { format } from 'date-fns'
 import ReactMarkdown from 'react-markdown'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
+import getOneArticle from '../../api/getOneArticle'
 import deleteArticle from '../../api/deleteArtical'
 
 import classes from './Article.module.scss'
 
-const Article = ({ articlesData, userData }) => {
+const Article = ({ userData }) => {
   const { slug } = useParams()
-  const article = articlesData ? articlesData.filter((article) => article.slug === slug)[0] : null
-  let tagKey = 1
+  let [article, setArticle] = useState(null)
 
-  let [visibility, setVisibility] = useState(null)
+  useEffect(() => {
+    getOneArticle(slug).then((res) => {
+      setArticle(res.article)
+    })
+  }, [])
 
   const navigate = useNavigate()
   const onSubmitRedirect = () => {
     navigate('/')
   }
+
+  let [visibility, setVisibility] = useState(null)
 
   const onDelete = () => {
     console.log(onYesDelete, visibility, onNoDelete)
@@ -38,8 +44,10 @@ const Article = ({ articlesData, userData }) => {
     const newVisibility = { ...visibility, delPop: false }
     setVisibility(newVisibility)
   }
+
+  let tagKey = 1
   return article ? (
-    <div key={article.slug} className={classes.Article}>
+    <div className={classes.Article}>
       <div className={classes.Article__content}>
         <div className={classes['Article__title-wrapper']}>
           <Link to={`/articles/${article.slug}`} className={classes.Article__title}>
@@ -118,12 +126,13 @@ const Article = ({ articlesData, userData }) => {
       <ReactMarkdown className={classes.Article__body}>{article.body}</ReactMarkdown>
     </div>
   ) : (
-    <Spin />
+    <div className={classes.Article}>
+      <Spin />
+    </div>
   )
 }
 
 const mapStateToProps = (state) => ({
-  articlesData: state.articlesData.articles,
   userData: state.userData,
 })
 

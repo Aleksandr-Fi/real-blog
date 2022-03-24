@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux'
 
-import articlesData from './reducers/articlesData'
+import pageData from './reducers/pageData'
 import userData from './reducers/userData'
 
 const reducer = combineReducers({
-  articlesData,
+  pageData,
   userData,
 })
 

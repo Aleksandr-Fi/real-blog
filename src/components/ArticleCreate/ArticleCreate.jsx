@@ -1,17 +1,27 @@
 import { useForm } from 'react-hook-form'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Alert } from 'antd'
 import { connect } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import postNewArticle from '../../api/postNewArticle'
 import puEditArticle from '../../api/puEditArticle'
+import getOneArticle from '../../api/getOneArticle'
 
 import classes from './ArticleCreate.module.scss'
 
-const ArticleCreate = ({ userData, articlesData }) => {
+const ArticleCreate = ({ userData }) => {
   const { slug } = useParams()
-  const article = slug && articlesData ? articlesData.filter((article) => article.slug === slug)[0] : null
+  let [article, setArticle] = useState(null)
+
+  useEffect(() => {
+    if (slug) {
+      getOneArticle(slug).then((res) => {
+        setArticle(res)
+        console.log(res)
+      })
+    }
+  }, [])
 
   const {
     register,
@@ -219,7 +229,7 @@ const ArticleCreate = ({ userData, articlesData }) => {
 
 const mapStateToProps = (state) => ({
   userData: state.userData,
-  articlesData: state.articlesData.articles,
+  // articlesData: state.articlesData.articles,
 })
 
 export default connect(mapStateToProps)(ArticleCreate)

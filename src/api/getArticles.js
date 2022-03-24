@@ -17,7 +17,13 @@ const getArticlesData =
       dispatch({
         type: 'ARTICLES_RECEIVED',
         newArticles: body,
+        page: page,
       })
+      return {
+        articles: body.articles,
+        articlesCount: body.articlesCount,
+        page: page,
+      }
     })
 
 export default getArticlesData

@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { format } from 'date-fns'
 import { bindActionCreators } from 'redux'
 import { Link } from 'react-router-dom'
+import { useEffect } from 'react'
 
 import getArticlesData from '../../api/getArticles'
 
@@ -11,6 +12,9 @@ import classes from './ArticleList.module.scss'
 
 const ArticleList = ({ data, getArticlesData }) => {
   const articles = data.articles
+  useEffect(() => {
+    getArticlesData(data.page)
+  }, [])
   let tagKey = 1
   return articles ? (
     <div className={classes.ArticleList}>
@@ -48,7 +52,7 @@ const ArticleList = ({ data, getArticlesData }) => {
       })}
       <Pagination
         onChange={(page) => getArticlesData(page)}
-        defaultCurrent={1}
+        defaultCurrent={data.page}
         total={data.articlesCount}
         showSizeChanger={false}
         defaultPageSize={5}

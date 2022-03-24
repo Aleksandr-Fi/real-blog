@@ -30,7 +30,7 @@ const Article = ({ articlesData, userData }) => {
 
   const onYesDelete = () => {
     deleteArticle(slug, userData.token).then(() => {
-      setTimeout(onSubmitRedirect, 1500, null)
+      setTimeout(onSubmitRedirect, 1000, null)
     })
   }
 

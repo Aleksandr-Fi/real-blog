@@ -239,17 +239,26 @@
     padding: 0 8px;
     padding-top: 2px;
     border-radius: 4px;
+    cursor: pointer;
     
     &--light {
       background: #FFFFFF;
       border: 1px solid #D9D9D9;
       box-sizing: border-box;
+
+      &:hover {
+        background: #e2e2e2;
+      }
     }
 
     &--blue {
       background: #1890FF;
       border: 1px solid #1890FF;
       color: #FFFFFF;
+
+      &:hover {
+        opacity: 0.7;
+      }
     }
   }
 

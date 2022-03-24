@@ -1,13 +1,14 @@
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Spin } from 'antd'
-import { HeartOutlined } from '@ant-design/icons'
+import { HeartOutlined, HeartFilled } from '@ant-design/icons'
 import { format } from 'date-fns'
 import ReactMarkdown from 'react-markdown'
 import { useState, useEffect } from 'react'
 
 import getOneArticle from '../../api/getOneArticle'
 import deleteArticle from '../../api/deleteArtical'
+import setInfoFavorite from '../../api/setInfoFavorite'
 
 import classes from './Article.module.scss'
 
@@ -45,6 +46,25 @@ const Article = ({ userData }) => {
     setVisibility(newVisibility)
   }
 
+  const onToggleLike = () => {
+    if (!article?.favorited) {
+      setInfoFavorite(slug, userData.token).then((res) => {
+        setArticle(res.article)
+      })
+    }
+    if (article?.favorited) {
+      setInfoFavorite(slug, userData.token, 'DELETE').then((res) => {
+        setArticle(res.article)
+      })
+    }
+  }
+
+  const heart = article?.favorited ? (
+    <HeartFilled style={{ fontSize: 16, padding: 4, color: '#FF0707' }} className={classes.ArticleList__heart} />
+  ) : (
+    <HeartOutlined style={{ fontSize: 16, padding: 4 }} className={classes.ArticleList__heart} />
+  )
+
   let tagKey = 1
   return article ? (
     <div className={classes.Article}>
@@ -53,8 +73,8 @@ const Article = ({ userData }) => {
           <Link to={`/articles/${article.slug}`} className={classes.Article__title}>
             {article.title}
           </Link>
-          <button className={classes['Article__title-btn']}>
-            <HeartOutlined style={{ fontSize: 16, padding: 4 }} className={classes.Article__heart} />
+          <button className={classes['Article__title-btn']} onClick={onToggleLike}>
+            {heart}
             <span className={classes.Article__favoritesCount}>{article.favoritesCount}</span>
           </button>
         </div>

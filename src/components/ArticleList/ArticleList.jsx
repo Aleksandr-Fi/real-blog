@@ -1,24 +1,43 @@
 import { Pagination, Spin } from 'antd'
-import { HeartOutlined } from '@ant-design/icons'
+import { HeartOutlined, HeartFilled } from '@ant-design/icons'
 import { connect } from 'react-redux'
 import { format } from 'date-fns'
-import { bindActionCreators } from 'redux'
 import { Link } from 'react-router-dom'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
-import getArticlesData from '../../api/getArticles'
+import getArticles from '../../api/getArticles'
+import * as actions from '../../store/actions'
 
 import classes from './ArticleList.module.scss'
 
-const ArticleList = ({ data, getArticlesData }) => {
-  const articles = data.articles
+const ArticleList = ({ pageData, userData, changePage }) => {
+  let [articlesData, setArticlesData] = useState(null)
+
   useEffect(() => {
-    getArticlesData(data.page)
+    getArticles(pageData).then((res) => {
+      setArticlesData(res)
+      console.log(userData)
+    })
   }, [])
+
+  const onChangePage = (page) => {
+    getArticles(page).then((res) => {
+      setArticlesData(res)
+      changePage(page)
+    })
+  }
+
+  const articles = articlesData?.articles
   let tagKey = 1
   return articles ? (
     <div className={classes.ArticleList}>
       {articles.map((article) => {
+        const heart = article.favorited ? (
+          <HeartFilled style={{ fontSize: 16, padding: 4, color: '#FF0707' }} className={classes.ArticleList__heart} />
+        ) : (
+          <HeartOutlined style={{ fontSize: 16, padding: 4 }} className={classes.ArticleList__heart} />
+        )
+
         return (
           <div key={article.slug} className={classes.ArticleList__article}>
             <div className={classes.ArticleList__content}>
@@ -27,7 +46,7 @@ const ArticleList = ({ data, getArticlesData }) => {
                   {article.title}
                 </Link>
                 <button className={classes['ArticleList__title-btn']}>
-                  <HeartOutlined style={{ fontSize: 16, padding: 4 }} className={classes.ArticleList__heart} />
+                  {heart}
                   <span className={classes.ArticleList__favoritesCount}>{article.favoritesCount}</span>
                 </button>
               </div>
@@ -51,24 +70,23 @@ const ArticleList = ({ data, getArticlesData }) => {
         )
       })}
       <Pagination
-        onChange={(page) => getArticlesData(page)}
-        defaultCurrent={data.page}
-        total={data.articlesCount}
+        onChange={(page) => onChangePage(page)}
+        defaultCurrent={pageData}
+        total={articlesData.articlesCount}
         showSizeChanger={false}
         defaultPageSize={5}
       />
     </div>
   ) : (
-    <Spin />
+    <div className={classes.ArticleList}>
+      <Spin />
+    </div>
   )
 }
 
 const mapStateToProps = (state) => ({
-  data: state.articlesData,
+  pageData: state.pageData.page,
+  userData: state.userData,
 })
 
-const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({ getArticlesData }, dispatch)
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(ArticleList)
+export default connect(mapStateToProps, actions)(ArticleList)

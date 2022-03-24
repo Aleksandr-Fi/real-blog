@@ -2,13 +2,12 @@
   width: 100%;
   height: 80px;
   padding: 14px 22px;
-  display: grid;
-  grid-template-columns: 148px auto 110px 110px;
-  gap: 20px;
+  display: flex;
   background-color: #FFFFFF;
   box-sizing: border-box;
 
   &__btn {
+    width: 110px;
     padding: 0;
     background-color: #FFFFFF;
     border: none;
@@ -17,18 +16,64 @@
     color: rgba(0, 0, 0, 0.85);
     cursor: pointer;
   }
-}
 
-.btn-logo {
-}
+  &__btn-logo {
+    width: 148px;
+  }
 
-.btn-singIn {
-  grid-column: 3/4;
-}
+  &__btn-create {
+    margin: auto;
+    margin-right: 0;
+    width: 115px;
+    height: 32px;
+    border: 1px solid #52C41A;
+    border-radius: 5px;
 
-.btn-singUp {
-  grid-column: 4/5;
-  color: #52C41A;
-  border: 1px solid #52C41A;
-  border-radius: 5px;
+    & > a {
+      color: #52C41A;
+      font-size: 14px;
+      line-height: 22px;
+      line-height: 12px;
+    }
+  }
+
+  &__btn-user {
+    margin-left: 27px;
+    padding-right: 60px;
+    width: auto;
+    display: flex;
+    position: relative;
+
+    & > a {
+      margin: auto 0;
+      font-size: 18px;
+      line-height: 28px;
+      color: rgba(0, 0, 0, 0.85);
+    }
+  }
+
+  &__avatar {
+    position: absolute;
+    right: 0;
+    width: 46px;
+    height: 46px;
+  }
+
+  &__btn-logOut {
+    margin-left: 27px;
+    color: rgba(0, 0, 0, 0.75);
+    border: 1px solid rgba(0, 0, 0, 0.75);
+    border-radius: 5px;
+  }
+
+  &__btn-singIn {
+    margin-left: auto;
+  }
+
+  &__btn-singUp {
+    margin-left: 20px;
+    color: #52C41A;
+    border: 1px solid #52C41A;
+    border-radius: 5px;
+  }
 }

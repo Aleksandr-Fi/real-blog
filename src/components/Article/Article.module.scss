@@ -1,5 +1,7 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:100,100italic,300,300italic,regular,italic,500,500italic,700,700italic,900,900italic);
+
 .Article {
-  margin: 0 auto 24px auto;
+  margin: 0 auto;
   width: 941px;
   padding: 15px;
   background: #FFFFFF;
@@ -28,6 +30,10 @@
     font-size: 20px;
     line-height: 28px;
     color: #1890FF;
+    // cropping a long title with an ellipsis
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 
   &__title-btn {
@@ -66,13 +72,13 @@
     background: #e2e2e2;
   }
 
-  &__slug {
+  &__description {
     font-size: 12px;
     line-height: 22px;
   }
 
   &__info {
-    padding-right: 50px;
+    padding-right: 60px;
     grid-column: 3/4;
     grid-row: 1/2;
     display: flex;
@@ -88,7 +94,7 @@
     color: rgba(0, 0, 0, 0.85);
   }
 
-  &__data {
+  &__date {
     font-size: 12px;
     line-height: 22px;
     color: rgba(0, 0, 0, 0.5);
@@ -101,8 +107,171 @@
     height: 46px;
   }
 
+  &__article-btns {
+    grid-column: 3/4;
+    grid-row: 2/3;
+    margin-top: 30px;
+    display: flex;
+    justify-content: end;
+    gap: 12px;
+    position: relative;
+  }
+
+  &__article-btn {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 22px;
+    padding: 6px 19px;
+    border-radius: 5px;
+    background: #FFFFFF;
+    cursor: pointer;
+    &:hover {
+      opacity: 0.7;
+    }
+
+    &--red {
+      color: #F5222D;
+      border: 1px solid #F5222D;
+    }
+
+    &--green {
+      color: #52C41A;
+      border: 1px solid #52C41A;
+    }
+  }
+
+  &__delete-btn {
+  }
+
+  &__delete-popup {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 22px;
+    color: #595959;
+
+    position: absolute;
+    width: 246px;
+    height: 104px;
+    background: none;
+    left: 121px;
+    opacity: 0;
+    transition: 1s;
+    visibility: hidden;
+
+    &--visible {
+      visibility: visible;
+      opacity:1;
+    }
+  }
+
+  &__delete-arrow {
+    position: absolute;
+    top: 6px;
+    z-index: 1;
+    width: 0;
+    height: 0;
+    border: 0 solid transparent;
+    border-top-width: 12px;
+    border-bottom-width: 12px;
+    border-right: 12px solid #FFFFFF;
+  }
+
+  &__delete-confirmation {
+    background: #FFFFFF;
+    position: relative;
+    margin-left: 6px;
+    padding: 14px;
+    width: 240px;
+    height: 104px;
+    border-radius: 4px;
+    -webkit-box-shadow: 0px 0px 8px 2px rgba(21, 41, 56, 0.2);
+    -moz-box-shadow: 0px 0px 8px 2px rgba(21, 41, 56, 0.2);
+    box-shadow: 0px 0px 8px 2px rgba(21, 41, 56, 0.2);
+
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  &__delete-warning {
+    display: flex;
+  }
+
+  &__warning-circle {
+    margin-top: 2px;
+    margin-left: 4px;
+    background: #FAAD14;
+    width: 15px; 
+    height: 14px;
+    border-radius: 50%;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -khtml-border-radius: 50%;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: #FFFFFF;
+    padding-top: 2px;
+  }
+
+  &__warning-message {
+    width: 184px;
+    height: 44px;
+    padding-left: 9px;
+    text-align: left;
+  }
+
+  &__warning-btns {
+    margin-top: auto;
+    align-items: flex-end;
+    display: flex;
+    justify-content: end;
+    gap: 8px;
+  }
+
+  &__warning-btn {
+    height: 24px;
+    padding: 0 8px;
+    padding-top: 2px;
+    border-radius: 4px;
+    cursor: pointer;
+    
+    &--light {
+      background: #FFFFFF;
+      border: 1px solid #D9D9D9;
+      box-sizing: border-box;
+
+      &:hover {
+        background: #e2e2e2;
+      }
+    }
+
+    &--blue {
+      background: #1890FF;
+      border: 1px solid #1890FF;
+      color: #FFFFFF;
+
+      &:hover {
+        opacity: 0.7;
+      }
+    }
+  }
+
+  &__link {
+      color: inherit ;
+      font-weight: inherit;
+      font-size: inherit;
+      line-height: inherit;
+    }
+
   &__body {
-    grid-column: 1/4;
+    margin-top: 25px;
+    width: 880px;
     grid-row: 3/4;
     font-weight: 400;
     font-size: 20px;
@@ -110,5 +279,6 @@
     font-weight: 400;
     font-size: 20px;
     line-height: 28px;
+    word-wrap: break-word;
   }
 }

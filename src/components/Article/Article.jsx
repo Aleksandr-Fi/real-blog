@@ -17,7 +17,7 @@ const Article = ({ userData }) => {
   let [article, setArticle] = useState(null)
 
   useEffect(() => {
-    getOneArticle(slug).then((res) => {
+    getOneArticle(slug, userData.token).then((res) => {
       setArticle(res.article)
     })
   }, [])

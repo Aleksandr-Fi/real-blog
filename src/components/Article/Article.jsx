@@ -4,6 +4,7 @@ import { Spin } from 'antd'
 import { HeartOutlined } from '@ant-design/icons'
 import { format } from 'date-fns'
 import ReactMarkdown from 'react-markdown'
+import { useState } from 'react'
 
 import deleteArticle from '../../api/deleteArtical'
 
@@ -14,14 +15,28 @@ const Article = ({ articlesData, userData }) => {
   const article = articlesData ? articlesData.filter((article) => article.slug === slug)[0] : null
   let tagKey = 1
 
+  let [visibility, setVisibility] = useState(null)
+
   const navigate = useNavigate()
   const onSubmitRedirect = () => {
     navigate('/')
   }
+
   const onDelete = () => {
+    console.log(onYesDelete, visibility, onNoDelete)
+    const newVisibility = { ...visibility, delPop: true }
+    setVisibility(newVisibility)
+  }
+
+  const onYesDelete = () => {
     deleteArticle(slug, userData.token).then(() => {
-      setTimeout(onSubmitRedirect, 2000, null)
+      setTimeout(onSubmitRedirect, 1500, null)
     })
+  }
+
+  const onNoDelete = () => {
+    const newVisibility = { ...visibility, delPop: false }
+    setVisibility(newVisibility)
   }
   return article ? (
     <div key={article.slug} className={classes.Article}>
@@ -63,6 +78,36 @@ const Article = ({ articlesData, userData }) => {
           >
             <span>Delete</span>
           </button>
+          <div
+            className={[
+              classes['Article__delete-popup'],
+              visibility?.delPop && classes['Article__delete-popup--visible'],
+            ].join(' ')}
+          >
+            <div className={classes['Article__delete-arrow']}></div>
+            <div className={classes['Article__delete-confirmation']}>
+              <div className={classes['Article__delete-warning']}>
+                <div className={classes['Article__warning-circle']}>
+                  <span>!</span>
+                </div>
+                <div className={classes['Article__warning-message']}>Are you sure to delete this article?</div>
+              </div>
+              <div className={classes['Article__warning-btns']}>
+                <button
+                  className={[classes['Article__warning-btn'], classes['Article__warning-btn--light']].join(' ')}
+                  onClick={onNoDelete}
+                >
+                  No
+                </button>
+                <button
+                  className={[classes['Article__warning-btn'], classes['Article__warning-btn--blue']].join(' ')}
+                  onClick={onYesDelete}
+                >
+                  Yes
+                </button>
+              </div>
+            </div>
+          </div>
           <button className={[classes['Article__article-btn'], classes['Article__article-btn--green']].join(' ')}>
             <Link className={classes.Article__link} to={`/articles/${slug}/edit`}>
               Edit

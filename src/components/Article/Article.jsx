@@ -7,7 +7,7 @@ import ReactMarkdown from 'react-markdown'
 import { useState, useEffect } from 'react'
 
 import getOneArticle from '../../api/getOneArticle'
-import deleteArticle from '../../api/deleteArtical'
+import deleteArticle from '../../api/deleteArticle'
 import setInfoFavorite from '../../api/setInfoFavorite'
 
 import classes from './Article.module.scss'

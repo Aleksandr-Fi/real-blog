@@ -14,14 +14,14 @@ const ArticleList = ({ pageData, userData, changePage }) => {
   let [articlesData, setArticlesData] = useState(null)
 
   useEffect(() => {
-    getArticles(pageData).then((res) => {
+    getArticles(pageData, userData.token).then((res) => {
       setArticlesData(res)
       console.log(userData)
     })
   }, [])
 
   const onChangePage = (page) => {
-    getArticles(page).then((res) => {
+    getArticles(page, userData.token).then((res) => {
       setArticlesData(res)
       changePage(page)
     })

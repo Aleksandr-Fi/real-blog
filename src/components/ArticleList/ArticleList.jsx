@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 
 import getArticles from '../../api/getArticles'
+import setInfoFavorite from '../../api/setInfoFavorite'
 import * as actions from '../../store/actions'
 
 import classes from './ArticleList.module.scss'
@@ -16,7 +17,6 @@ const ArticleList = ({ pageData, userData, changePage }) => {
   useEffect(() => {
     getArticles(pageData, userData.token).then((res) => {
       setArticlesData(res)
-      console.log(userData)
     })
   }, [])
 
@@ -28,6 +28,23 @@ const ArticleList = ({ pageData, userData, changePage }) => {
   }
 
   const articles = articlesData?.articles
+  const onToggleLike = (slug, favorited) => {
+    if (!favorited) {
+      setInfoFavorite(slug, userData.token).then(() => {
+        getArticles(pageData, userData.token).then((res) => {
+          setArticlesData(res)
+        })
+      })
+    }
+    if (favorited) {
+      setInfoFavorite(slug, userData.token, 'DELETE').then(() => {
+        getArticles(pageData, userData.token).then((res) => {
+          setArticlesData(res)
+        })
+      })
+    }
+  }
+
   let tagKey = 1
   return articles ? (
     <div className={classes.ArticleList}>
@@ -45,7 +62,10 @@ const ArticleList = ({ pageData, userData, changePage }) => {
                 <Link to={`/articles/${article.slug}`} className={classes.ArticleList__title}>
                   {article.title}
                 </Link>
-                <button className={classes['ArticleList__title-btn']}>
+                <button
+                  className={classes['ArticleList__title-btn']}
+                  onClick={() => onToggleLike(article.slug, article.favorited)}
+                >
                   {heart}
                   <span className={classes.ArticleList__favoritesCount}>{article.favoritesCount}</span>
                 </button>

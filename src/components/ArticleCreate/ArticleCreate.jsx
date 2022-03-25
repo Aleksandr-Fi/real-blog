@@ -33,11 +33,8 @@ const ArticleCreate = ({ userData }) => {
         setTagList(res.article.tagList)
         reset(newDefaultValues)
       })
-      console.log('mount')
     }
   }, [])
-
-  useEffect(() => console.log('update'), [tagList])
 
   let [errorMessage, setErrorMessage] = useState(null)
   let [successMessage, setSuccessMessage] = useState(null)
@@ -45,13 +42,18 @@ const ArticleCreate = ({ userData }) => {
   const addTag = () => {
     const newTagList = [...tagList, '']
     setTagList(newTagList)
-    console.log(tagList)
   }
 
   const deleteTag = (tag) => {
     let newTagList = tagList
     const idx = newTagList.findIndex((el) => el === tag)
     newTagList = [...newTagList.slice(0, idx), ...newTagList.slice(idx + 1)]
+    setTagList(newTagList)
+  }
+
+  const changeTag = (id, newTag) => {
+    const newTagList = tagList
+    newTagList[id] = newTag
     setTagList(newTagList)
   }
 
@@ -65,7 +67,6 @@ const ArticleCreate = ({ userData }) => {
     if (tagList) {
       newData.tagList = tagList
     }
-    console.log(newData)
     const submitFunction = slug ? puEditArticle : postNewArticle
     submitFunction(newData, userData.token, slug)
       .then(() => {
@@ -164,6 +165,7 @@ const ArticleCreate = ({ userData }) => {
                         className={[classes.Article__input, classes['Article__new-tag-input']].join(' ')}
                         tabIndex="1"
                         placeholder="Tag"
+                        onChange={(e) => changeTag(id, e.target.value)}
                         defaultValue={tag}
                       />
                     </label>

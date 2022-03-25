@@ -13,7 +13,7 @@ import classes from './ArticleCreate.module.scss'
 const ArticleCreate = ({ userData }) => {
   const { slug } = useParams()
 
-  let [tagList, setTagList] = useState([])
+  let [tagList, setTagList] = useState([''])
 
   const {
     register,

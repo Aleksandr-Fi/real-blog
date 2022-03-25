@@ -17,14 +17,14 @@ const postNewUser = async (data) => {
     },
     body: JSON.stringify(bodyPost),
   })
+  const body = await res.json()
   if (res.status === 422) {
-    const body = await res.json()
     throw { responseError: body, message: 'The username or login is already employed.' }
   }
   if (!res.ok) {
-    throw new Error('Oops, something went wrong.')
+    throw { responseError: body, message: 'Oops, something went wrong.' }
   }
-  return await res.json()
+  return body
 }
 
 export default postNewUser

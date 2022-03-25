@@ -18,6 +18,7 @@ const Profile = ({ userData, getUserData }) => {
 
   let [errorMessage, setErrorMessage] = useState(null)
   let [successMessage, setSuccessMessage] = useState(null)
+  let [serverError, setServerError] = useState(null)
 
   const navigate = useNavigate()
   const onSubmitRedirect = () => {
@@ -33,9 +34,11 @@ const Profile = ({ userData, getUserData }) => {
         setTimeout(onSubmitRedirect, 2000, null)
       })
       .catch((error) => {
+        setServerError(error.responseError)
         setErrorMessage(<Alert message={error.message} type="error" />)
         setSuccessMessage(null)
         setTimeout(setErrorMessage, 5000, null)
+        setTimeout(setServerError, 8000, null)
       })
   }
   return (
@@ -47,7 +50,10 @@ const Profile = ({ userData, getUserData }) => {
         <label className={classes['User__label-input']}>
           <span className={classes['User__caption-input']}>Username</span>
           <input
-            className={[classes.User__input, errors?.username && classes['User__input--error']].join(' ')}
+            className={[
+              classes.User__input,
+              (errors?.username || serverError?.errors?.username) && classes['User__input--error'],
+            ].join(' ')}
             tabIndex="1"
             placeholder="Username"
             defaultValue={userData.username}
@@ -70,11 +76,24 @@ const Profile = ({ userData, getUserData }) => {
               {errors?.username?.message || 'ERROR'}
             </span>
           )}
+          {serverError?.errors?.username && (
+            <span
+              className={[
+                classes['User__caption-input'],
+                serverError?.errors?.username && classes['User__error-text'],
+              ].join(' ')}
+            >
+              {serverError?.errors?.username || 'ERROR'}
+            </span>
+          )}
         </label>
         <label className={classes['User__label-input']}>
           <span className={classes['User__caption-input']}>Email address</span>
           <input
-            className={[classes.User__input, errors?.email && classes['User__input--error']].join(' ')}
+            className={[
+              classes.User__input,
+              (errors?.email || serverError?.errors?.email) && classes['User__input--error'],
+            ].join(' ')}
             tabIndex="2"
             placeholder="Email address"
             defaultValue={userData.email}
@@ -86,6 +105,16 @@ const Profile = ({ userData, getUserData }) => {
           {errors?.email && (
             <span className={[classes['User__caption-input'], errors?.email && classes['User__error-text']].join(' ')}>
               {errors?.email?.message || 'ERROR'}
+            </span>
+          )}
+          {serverError?.errors?.email && (
+            <span
+              className={[
+                classes['User__caption-input'],
+                serverError?.errors?.email && classes['User__error-text'],
+              ].join(' ')}
+            >
+              {serverError?.errors?.email || 'ERROR'}
             </span>
           )}
         </label>

@@ -16,10 +16,14 @@ const login = async (data) => {
     },
     body: JSON.stringify(bodyPost),
   })
-  if (!res.ok) {
-    throw new Error('Oops, something went wrong.')
+  const body = await res.json()
+  if (res.status === 422) {
+    throw { responseError: body, message: 'Email or password is invalid.' }
   }
-  return await res.json()
+  if (!res.ok) {
+    throw { responseError: body, message: 'Oops, something went wrong.' }
+  }
+  return body
 }
 
 export default login

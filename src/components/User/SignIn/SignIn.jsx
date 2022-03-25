@@ -19,6 +19,7 @@ const SignIn = ({ getUserData }) => {
 
   let [errorMessage, setErrorMessage] = useState(null)
   let [successMessage, setSuccessMessage] = useState(null)
+  let [serverError, setServerError] = useState(null)
 
   const navigate = useNavigate()
   const onSubmitRedirect = () => {
@@ -36,9 +37,11 @@ const SignIn = ({ getUserData }) => {
         setTimeout(onSubmitRedirect, 1000)
       })
       .catch((error) => {
+        setServerError(error.responseError)
         setErrorMessage(<Alert message={error.message} type="error" />)
         setSuccessMessage(null)
         setTimeout(setErrorMessage, 5000, null)
+        setTimeout(setServerError, 8000, null)
       })
   }
   return (
@@ -50,7 +53,10 @@ const SignIn = ({ getUserData }) => {
         <label className={classes['User__label-input']}>
           <span className={classes['User__caption-input']}>Email address</span>
           <input
-            className={[classes.User__input, errors?.email && classes['User__input--error']].join(' ')}
+            className={[
+              classes.User__input,
+              (errors?.email || serverError?.errors['email or password']) && classes['User__input--error'],
+            ].join(' ')}
             tabIndex="2"
             placeholder="Email address"
             {...register('email', {
@@ -67,7 +73,10 @@ const SignIn = ({ getUserData }) => {
         <label className={classes['User__label-input']}>
           <span className={classes['User__caption-input']}>Password</span>
           <input
-            className={[classes.User__input, errors?.password && classes['User__input--error']].join(' ')}
+            className={[
+              classes.User__input,
+              (errors?.password || serverError?.errors['email or password']) && classes['User__input--error'],
+            ].join(' ')}
             tabIndex="3"
             type="password"
             placeholder="Password"

@@ -14,8 +14,6 @@ const ArticleCreate = ({ userData }) => {
   const { slug } = useParams()
 
   let [tagList, setTagList] = useState([])
-  let [newTagError, setNewTagError] = useState(null)
-  let [newTag, setNewTag] = useState('')
 
   const {
     register,
@@ -35,30 +33,19 @@ const ArticleCreate = ({ userData }) => {
         setTagList(res.article.tagList)
         reset(newDefaultValues)
       })
+      console.log('mount')
     }
   }, [])
+
+  useEffect(() => console.log('update'), [tagList])
 
   let [errorMessage, setErrorMessage] = useState(null)
   let [successMessage, setSuccessMessage] = useState(null)
 
   const addTag = () => {
-    const repeatedTag = tagList.filter((tag) => tag === newTag)
-    if (!newTag) {
-      setNewTagError('Thats feild is required')
-    } else if (repeatedTag.length) {
-      setNewTagError('The tag should not be repeated')
-    }
-    if (newTag && !repeatedTag.length) {
-      const newTagList = tagList
-      newTagList.push(newTag)
-      setTagList(newTagList)
-      setNewTagError(null)
-      setNewTag('')
-    }
-  }
-
-  const deleteNewTag = () => {
-    setNewTag('')
+    const newTagList = [...tagList, '']
+    setTagList(newTagList)
+    console.log(tagList)
   }
 
   const deleteTag = (tag) => {
@@ -74,12 +61,11 @@ const ArticleCreate = ({ userData }) => {
   }
 
   const onSubmit = (data) => {
-    addTag()
-    setNewTagError(null)
     const newData = data
     if (tagList) {
       newData.tagList = tagList
     }
+    console.log(newData)
     const submitFunction = slug ? puEditArticle : postNewArticle
     submitFunction(newData, userData.token, slug)
       .then(() => {
@@ -159,16 +145,25 @@ const ArticleCreate = ({ userData }) => {
         <div className={classes['Article__tag-list']}>
           <span className={classes['Article__caption-input']}>Tags</span>
           {tagList.length
-            ? tagList.map((tag) => {
-                const onDelete = () => deleteTag(tag)
+            ? tagList.map((tag, id) => {
+                const addBtn =
+                  tagList.length - 1 === id ? (
+                    <button
+                      className={[classes['Article__tag-btn'], classes['Article__tag-btn--blue']].join(' ')}
+                      tabIndex="2"
+                      type="button"
+                      onClick={addTag}
+                    >
+                      Add tag
+                    </button>
+                  ) : null
                 return (
-                  <div key={tag} className={classes['Article__tag-wrapper']}>
+                  <div key={tag + id} className={classes['Article__tag-wrapper']}>
                     <label className={[classes['Article__label-input'], classes['Article__tag-label']].join(' ')}>
                       <input
                         className={[classes.Article__input, classes['Article__new-tag-input']].join(' ')}
                         tabIndex="1"
-                        placeholder="Title"
-                        onChange={(e) => setNewTag(e.target.value)}
+                        placeholder="Tag"
                         defaultValue={tag}
                       />
                     </label>
@@ -176,50 +171,15 @@ const ArticleCreate = ({ userData }) => {
                       className={[classes['Article__tag-btn'], classes['Article__tag-btn--red']].join(' ')}
                       tabIndex="3"
                       type="button"
-                      onClick={onDelete}
+                      onClick={() => deleteTag(tag)}
                     >
                       Delete
                     </button>
+                    {addBtn}
                   </div>
                 )
               })
             : null}
-          <div className={classes['Article__tag-wrapper']}>
-            <label className={[classes['Article__label-input'], classes['Article__tag-label']].join(' ')}>
-              <input
-                className={[
-                  classes.Article__input,
-                  classes['Article__new-tag-input'],
-                  newTagError && classes['Article__input--red'],
-                ].join(' ')}
-                tabIndex="1"
-                placeholder="Title"
-                onChange={(e) => setNewTag(e.target.value)}
-                value={newTag}
-              />
-              {newTagError && (
-                <span className={[classes['Article__caption-input'], classes['Article__caption-input--red']].join(' ')}>
-                  {newTagError}
-                </span>
-              )}
-            </label>
-            <button
-              className={[classes['Article__tag-btn'], classes['Article__tag-btn--red']].join(' ')}
-              tabIndex="3"
-              type="button"
-              onClick={deleteNewTag}
-            >
-              Delete
-            </button>
-            <button
-              className={[classes['Article__tag-btn'], classes['Article__tag-btn--blue']].join(' ')}
-              tabIndex="2"
-              type="button"
-              onClick={addTag}
-            >
-              Add tag
-            </button>
-          </div>
         </div>
         <button className={classes.Article__submit} tabIndex="6" type="submit">
           Send
@@ -231,7 +191,6 @@ const ArticleCreate = ({ userData }) => {
 
 const mapStateToProps = (state) => ({
   userData: state.userData,
-  // articlesData: state.articlesData.articles,
 })
 
 export default connect(mapStateToProps)(ArticleCreate)

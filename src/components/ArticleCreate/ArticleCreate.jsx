@@ -57,8 +57,6 @@ const ArticleCreate = ({ userData }) => {
   const cleanTagList = () => {
     const newSet = new Set()
     tagList.forEach((el) => newSet.add(el))
-    console.log(newSet.values())
-    console.log(Array.from(newSet.values()))
     const newTagList = Array.from(newSet.values()).filter((el) => el)
     setTagList(newTagList)
     return newTagList
@@ -78,7 +76,6 @@ const ArticleCreate = ({ userData }) => {
     if (newTagList) {
       newData.tagList = newTagList
     }
-    console.log(newData)
     const submitFunction = slug ? puEditArticle : postNewArticle
     submitFunction(newData, userData.token, slug)
       .then(() => {

@@ -44,16 +44,18 @@ const ArticleCreate = ({ userData }) => {
     setTagList(newTagList)
   }
 
+  let ka = 1
+  const keys = () => (ka += 1)
+
   const deleteTag = (tag) => {
-    let newTagList = tagList
-    const idx = newTagList.findIndex((el) => el === tag)
-    newTagList = [...newTagList.slice(0, idx), ...newTagList.slice(idx + 1)]
+    const idx = tagList.findIndex((el) => el === tag)
+    let newTagList = [...tagList.slice(0, idx), ...tagList.slice(idx + 1)]
     setTagList(newTagList)
   }
 
-  const changeTag = (id, newTag) => {
-    const newTagList = tagList
-    newTagList[id] = newTag
+  const changeTag = (id, event) => {
+    const index = tagList.indexOf(event.target.name)
+    const newTagList = [...tagList.slice(0, index), event.target.value, ...tagList.slice(index + 1)]
     setTagList(newTagList)
   }
 
@@ -159,14 +161,15 @@ const ArticleCreate = ({ userData }) => {
                     </button>
                   ) : null
                 return (
-                  <div key={tag + id} className={classes['Article__tag-wrapper']}>
+                  <div key={keys()} className={classes['Article__tag-wrapper']}>
                     <label className={[classes['Article__label-input'], classes['Article__tag-label']].join(' ')}>
                       <input
                         className={[classes.Article__input, classes['Article__new-tag-input']].join(' ')}
                         tabIndex="1"
                         placeholder="Tag"
-                        onChange={(e) => changeTag(id, e.target.value)}
-                        defaultValue={tag}
+                        onChange={(e) => changeTag(id, e)}
+                        value={tag}
+                        name={tag}
                       />
                     </label>
                     <button

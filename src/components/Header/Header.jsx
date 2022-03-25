@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { useState, useEffect } from 'react'
 
@@ -17,9 +17,15 @@ const Header = ({ userData, logOut, getUserData }) => {
     setImageUrl(imageErrorUrl)
   }
 
+  const navigate = useNavigate()
+  const onSubmitRedirect = () => {
+    navigate('/')
+  }
+
   const onOut = () => {
     localStorage.clear()
     logOut()
+    setTimeout(onSubmitRedirect, 1000)
   }
 
   useEffect(() => {

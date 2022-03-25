@@ -43,9 +43,7 @@ const Header = ({ userData, logOut, getUserData }) => {
   return userData.isFetch ? (
     <header className={classes.Header}>
       <button className={[classes.Header__btn, classes['Header__btn-logo']].join(' ')}>
-        <Link className={classes.Header__btn} to="/">
-          Realworld Blog
-        </Link>
+        <Link to="/">Realworld Blog</Link>
       </button>
       <button className={[classes.Header__btn, classes['Header__btn-create']].join(' ')}>
         <Link to="/new-article">Create article</Link>
@@ -55,25 +53,19 @@ const Header = ({ userData, logOut, getUserData }) => {
         <img className={classes.Header__avatar} src={imageUrl} alt="avatar" onError={onImageError} />
       </button>
       <button className={[classes.Header__btn, classes['Header__btn-logOut']].join(' ')} onClick={onOut}>
-        <span className={classes.Header__btn}>Log Out</span>
+        <span>Log Out</span>
       </button>
     </header>
   ) : (
     <header className={classes.Header}>
       <button className={[classes.Header__btn, classes['Header__btn-logo']].join(' ')}>
-        <Link className={classes.Header__btn} to="/">
-          Realworld Blog
-        </Link>
+        <Link to="/">Realworld Blog</Link>
       </button>
       <button className={[classes.Header__btn, classes['Header__btn-singIn']].join(' ')}>
-        <Link className={classes.Header__btn} to="/sign-in">
-          Sign In
-        </Link>
+        <Link to="/sign-in">Sign In</Link>
       </button>
       <button className={[classes.Header__btn, classes['Header__btn-singUp']].join(' ')}>
-        <Link className={classes.Header__btn} to="/sign-up">
-          Sign Up
-        </Link>
+        <Link to="/sign-up">Sign Up</Link>
       </button>
     </header>
   )

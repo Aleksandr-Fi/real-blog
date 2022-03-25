@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form'
 import { useState, useEffect } from 'react'
 import { Alert } from 'antd'
 import { connect } from 'react-redux'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import postNewArticle from '../../api/postNewArticle'
 import puEditArticle from '../../api/puEditArticle'
@@ -10,9 +10,7 @@ import getOneArticle from '../../api/getOneArticle'
 
 import classes from './ArticleCreate.module.scss'
 
-const ArticleCreate = ({ userData }) => {
-  const { slug } = useParams()
-
+const ArticleCreate = ({ userData, slug }) => {
   let [tagList, setTagList] = useState([''])
 
   const {
@@ -34,7 +32,11 @@ const ArticleCreate = ({ userData }) => {
         reset(newDefaultValues)
       })
     }
+    console.log('mount')
   }, [])
+  useEffect(() => {
+    console.log('update')
+  })
 
   let [errorMessage, setErrorMessage] = useState(null)
   let [successMessage, setSuccessMessage] = useState(null)

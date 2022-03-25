@@ -8,6 +8,7 @@ import SignUp from '../User/SignUp'
 import SignIn from '../User/SignIn'
 import Profile from '../User/Profile'
 import ArticleCreate from '../ArticleCreate'
+import EditArticle from '../ArticleCreate/EditArticle'
 
 import classes from './App.module.scss'
 
@@ -20,11 +21,11 @@ const App = () => {
           <Route path="/" element={<ArticleList />} />
           <Route path="/articles" element={<ArticleList />} />
           <Route path="/articles/:slug" element={<Article />} />
-          <Route path="/articles/:slug/edit" element={<ArticleCreate />} />
+          <Route path="/articles/:slug/edit" element={<EditArticle />} />
+          <Route path="/new-article" element={<ArticleCreate />} />
           <Route path="/sign-in" element={<SignIn />} />
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/new-article" element={<ArticleCreate />} />
           <Route path="*" element={<Spin />} />
         </Routes>
       </div>

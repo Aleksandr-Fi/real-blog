@@ -12,27 +12,31 @@ import classes from './ArticleCreate.module.scss'
 
 const ArticleCreate = ({ userData }) => {
   const { slug } = useParams()
-  let [article, setArticle] = useState(null)
 
   let [tagList, setTagList] = useState([])
   let [newTagError, setNewTagError] = useState(null)
   let [newTag, setNewTag] = useState('')
 
-  useEffect(() => {
-    if (slug) {
-      getOneArticle(slug).then((res) => {
-        setArticle(res.article)
-        setTagList(res.article.tagList)
-        console.log(res)
-      })
-    }
-  }, [])
-
   const {
     register,
     formState: { errors },
     handleSubmit,
-  } = useForm()
+    reset,
+  } = useForm({ defaultValues: { title: '', description: '', body: '' } })
+
+  useEffect(() => {
+    if (slug) {
+      getOneArticle(slug).then((res) => {
+        const newDefaultValues = {
+          title: res.article.title,
+          description: res.article.description,
+          body: res.article.body,
+        }
+        setTagList(res.article.tagList)
+        reset(newDefaultValues)
+      })
+    }
+  }, [])
 
   let [errorMessage, setErrorMessage] = useState(null)
   let [successMessage, setSuccessMessage] = useState(null)
@@ -106,7 +110,6 @@ const ArticleCreate = ({ userData }) => {
             className={[classes.Article__input, errors?.title && classes['Article__input--red']].join(' ')}
             tabIndex="1"
             placeholder="Title"
-            defaultValue={article?.title || ''}
             {...register('title', {
               required: 'Thats feild is required',
             })}
@@ -123,7 +126,6 @@ const ArticleCreate = ({ userData }) => {
             className={[classes.Article__input, errors?.description && classes['Article__input--red']].join(' ')}
             tabIndex="1"
             placeholder="Description"
-            defaultValue={article?.description || ''}
             {...register('description', {
               required: 'Thats feild is required',
             })}
@@ -144,7 +146,6 @@ const ArticleCreate = ({ userData }) => {
             ].join(' ')}
             tabIndex="1"
             placeholder="Text"
-            defaultValue={article?.body || ''}
             {...register('body', {
               required: 'Thats feild is required',
             })}

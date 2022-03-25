@@ -9,7 +9,7 @@ const getOneArticle = async (slug, token = null) => {
     },
   })
   if (!res.ok) {
-    throw new Error(`Could not fetch article, recived ${res.status}`)
+    throw new Error(`Could not fetch article, received ${res.status}`)
   }
   return await res.json()
 }

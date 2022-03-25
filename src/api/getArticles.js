@@ -10,7 +10,7 @@ const getArticles = async (page = 1, token = null) => {
     },
   })
   if (!res.ok) {
-    throw new Error(`Could not fetch articles, recived ${res.status}`)
+    throw new Error(`Could not fetch articles, received ${res.status}`)
   }
   return await res.json()
 }

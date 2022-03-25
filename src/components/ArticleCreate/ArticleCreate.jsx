@@ -109,7 +109,7 @@ const ArticleCreate = ({ userData, slug }) => {
             tabIndex="1"
             placeholder="Title"
             {...register('title', {
-              required: 'Thats feild is required',
+              required: 'Thats field is required',
             })}
           />
           {errors?.title && (
@@ -125,7 +125,7 @@ const ArticleCreate = ({ userData, slug }) => {
             tabIndex="1"
             placeholder="Description"
             {...register('description', {
-              required: 'Thats feild is required',
+              required: 'Thats field is required',
             })}
           />
           {errors?.description && (
@@ -145,7 +145,7 @@ const ArticleCreate = ({ userData, slug }) => {
             tabIndex="1"
             placeholder="Text"
             {...register('body', {
-              required: 'Thats feild is required',
+              required: 'Thats field is required',
             })}
           />
           {errors?.body && (

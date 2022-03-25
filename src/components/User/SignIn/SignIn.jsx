@@ -60,7 +60,7 @@ const SignIn = ({ getUserData }) => {
             tabIndex="2"
             placeholder="Email address"
             {...register('email', {
-              required: 'Thats feild is required',
+              required: 'Thats field is required',
               validate: (val) => regExpEmail.test(val) || 'Email address will be correct',
             })}
           />
@@ -81,7 +81,7 @@ const SignIn = ({ getUserData }) => {
             type="password"
             placeholder="Password"
             {...register('password', {
-              required: 'Thats feild is required',
+              required: 'Thats field is required',
               minLength: {
                 value: 6,
                 message: 'Your password needs to be at least 6 characters.',

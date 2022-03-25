@@ -58,7 +58,7 @@ const Profile = ({ userData, getUserData }) => {
             placeholder="Username"
             defaultValue={userData.username}
             {...register('username', {
-              required: 'Thats feild is required',
+              required: 'Thats field is required',
               minLength: {
                 value: 3,
                 message: 'Your username needs to be at least 3 characters.',
@@ -98,7 +98,7 @@ const Profile = ({ userData, getUserData }) => {
             placeholder="Email address"
             defaultValue={userData.email}
             {...register('email', {
-              required: 'Thats feild is required',
+              required: 'Thats field is required',
               validate: (val) => regExpEmail.test(val) || 'Email address will be correct',
             })}
           />

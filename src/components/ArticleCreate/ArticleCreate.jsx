@@ -44,20 +44,28 @@ const ArticleCreate = ({ userData }) => {
     setTagList(newTagList)
   }
 
-  let ka = 1
-  const keys = () => (ka += 1)
-
-  const deleteTag = (tag) => {
-    const idx = tagList.findIndex((el) => el === tag)
-    let newTagList = [...tagList.slice(0, idx), ...tagList.slice(idx + 1)]
+  const deleteTag = (index) => {
+    let newTagList = [...tagList.slice(0, index), ...tagList.slice(index + 1)]
     setTagList(newTagList)
   }
 
-  const changeTag = (id, event) => {
-    const index = tagList.indexOf(event.target.name)
+  const changeTag = (index, event) => {
     const newTagList = [...tagList.slice(0, index), event.target.value, ...tagList.slice(index + 1)]
     setTagList(newTagList)
   }
+
+  const cleanTagList = () => {
+    const newSet = new Set()
+    tagList.forEach((el) => newSet.add(el))
+    console.log(newSet.values())
+    console.log(Array.from(newSet.values()))
+    const newTagList = Array.from(newSet.values()).filter((el) => el)
+    setTagList(newTagList)
+    return newTagList
+  }
+
+  let variableKey = 1
+  const keys = () => (variableKey += 1)
 
   const navigate = useNavigate()
   const onSubmitRedirect = () => {
@@ -66,9 +74,11 @@ const ArticleCreate = ({ userData }) => {
 
   const onSubmit = (data) => {
     const newData = data
-    if (tagList) {
-      newData.tagList = tagList
+    const newTagList = cleanTagList()
+    if (newTagList) {
+      newData.tagList = newTagList
     }
+    console.log(newData)
     const submitFunction = slug ? puEditArticle : postNewArticle
     submitFunction(newData, userData.token, slug)
       .then(() => {
@@ -148,9 +158,9 @@ const ArticleCreate = ({ userData }) => {
         <div className={classes['Article__tag-list']}>
           <span className={classes['Article__caption-input']}>Tags</span>
           {tagList.length
-            ? tagList.map((tag, id) => {
+            ? tagList.map((tag, index) => {
                 const addBtn =
-                  tagList.length - 1 === id ? (
+                  tagList.length - 1 === index ? (
                     <button
                       className={[classes['Article__tag-btn'], classes['Article__tag-btn--blue']].join(' ')}
                       tabIndex="2"
@@ -167,7 +177,7 @@ const ArticleCreate = ({ userData }) => {
                         className={[classes.Article__input, classes['Article__new-tag-input']].join(' ')}
                         tabIndex="1"
                         placeholder="Tag"
-                        onChange={(e) => changeTag(id, e)}
+                        onChange={(e) => changeTag(index, e)}
                         value={tag}
                         name={tag}
                       />
@@ -176,7 +186,7 @@ const ArticleCreate = ({ userData }) => {
                       className={[classes['Article__tag-btn'], classes['Article__tag-btn--red']].join(' ')}
                       tabIndex="3"
                       type="button"
-                      onClick={() => deleteTag(tag)}
+                      onClick={() => deleteTag(index)}
                     >
                       Delete
                     </button>

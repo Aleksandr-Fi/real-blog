@@ -1,6 +1,6 @@
 import rootUrlKata from './URL'
 
-const puEditArticle = async (data, token, slug) => {
+const putEditArticle = async (data, token, slug) => {
   const rootUrl = rootUrlKata
   const bodyPost = {
     article: data,
@@ -19,4 +19,4 @@ const puEditArticle = async (data, token, slug) => {
   return await res.json()
 }
 
-export default puEditArticle
+export default putEditArticle

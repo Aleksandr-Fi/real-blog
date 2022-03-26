@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
 import postNewArticle from '../../api/postNewArticle'
-import puEditArticle from '../../api/puEditArticle'
+import putEditArticle from '../../api/putEditArticle'
 import getOneArticle from '../../api/getOneArticle'
 
 import classes from './ArticleCreate.module.scss'
@@ -78,7 +78,7 @@ const ArticleCreate = ({ userData, slug }) => {
     if (newTagList) {
       newData.tagList = newTagList
     }
-    const submitFunction = slug ? puEditArticle : postNewArticle
+    const submitFunction = slug ? putEditArticle : postNewArticle
     submitFunction(newData, userData.token, slug)
       .then(() => {
         setErrorMessage(null)

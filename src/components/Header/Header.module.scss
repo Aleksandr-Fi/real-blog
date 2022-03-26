@@ -15,6 +15,10 @@
     line-height: 28px;
     color: rgba(0, 0, 0, 0.85);
     cursor: pointer;
+
+    & > * {
+      color: inherit;
+    }
   }
 
   &__btn-logo {
@@ -28,13 +32,6 @@
     height: 32px;
     border: 1px solid #52C41A;
     border-radius: 5px;
-
-    & > a {
-      color: #52C41A;
-      font-size: 14px;
-      line-height: 22px;
-      line-height: 12px;
-    }
   }
 
   &__btn-user {
@@ -43,13 +40,6 @@
     width: auto;
     display: flex;
     position: relative;
-
-    & > a {
-      margin: auto 0;
-      font-size: 18px;
-      line-height: 28px;
-      color: rgba(0, 0, 0, 0.85);
-    }
   }
 
   &__avatar {
